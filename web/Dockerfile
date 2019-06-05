@@ -1,10 +1,10 @@
-FROM ubuntu:latest
-MAINTAINER PK "partheeban.kandasamy@gmail.com"
-RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
-COPY . /app
-WORKDIR /app
+FROM python:3.7-alpine
+WORKDIR /code
+ENV FLASK_APP app.py
+ENV FLASK_RUN_HOST 0.0.0.0
+RUN apk add --no-cache gcc musl-dev linux-headers
+COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
+COPY . .
 RUN chmod 644 app.py
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+CMD ["flask", "run"]
